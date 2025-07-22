@@ -29,7 +29,6 @@ def main():
             return
         else:
             shutil.copytree(BIN_DIR, Path.cwd() / 'BIN')
-            shutil.copytree(CR / '配置文件', Path.cwd() / '配置文件')
 
     original_bin: str = args.init_from
     if original_bin is None:
@@ -49,10 +48,3 @@ def main():
     else:
         if not BIN_DIR.exists():
             shutil.copytree(bindir, BIN_DIR)
-    CONFIG_DIR = original_bin / '配置文件'
-    local_config_dir = CR / '配置文件'
-    if not CONFIG_DIR.exists() or not CONFIG_DIR.is_dir():
-        print(f'CONFIG directory {CONFIG_DIR} does not exist.')
-        return
-    if not local_config_dir.exists():
-        shutil.copytree(CONFIG_DIR, local_config_dir)
