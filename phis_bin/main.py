@@ -37,7 +37,9 @@ def main():
             print('please init from existing binaries first.')
             return
         else:
+            print(f"initing from verison {get_version(BIN_DIR)}")
             shutil.copytree(BIN_DIR, Path.cwd() / 'BIN')
+            return
 
     original_bin: str = args.init_from
     if original_bin is None:
