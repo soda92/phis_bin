@@ -5,6 +5,15 @@ import shutil
 CR = Path(__file__).parent
 
 
+def get_version(bindir: Path) -> str:
+    dir_names = [i for i in bindir.iterdir() if i.is_dir() and i.name.startswith('1')]
+    if len(dir_names) == 0:
+        return 'unknown'
+    else:
+        dir_names.sort()
+        return dir_names[-1].name
+
+
 def main():
     BIN_DIR = CR / 'BIN'
 
@@ -46,5 +55,8 @@ def main():
         print(f'BIN directory {bindir} does not exist.')
         return
     else:
-        if not BIN_DIR.exists():
-            shutil.copytree(bindir, BIN_DIR)
+        if BIN_DIR.exists():
+            print(f"removing existing version {get_version(BIN_DIR)}")
+            shutil.rmtree(BIN_DIR)
+        print(f"initing from verison {get_version(bindir)}")
+        shutil.copytree(bindir, BIN_DIR)
