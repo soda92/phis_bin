@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 import argparse
 import shutil
@@ -8,6 +9,7 @@ CR = Path(__file__).parent
 def get_version(bindir: Path) -> str:
     dir_names = [i for i in bindir.iterdir() if i.is_dir() and i.name.startswith('1')]
     if len(dir_names) == 0:
+        logging.error(f'No version directories found in {bindir}')
         return 'unknown'
     else:
         dir_names.sort()
@@ -30,6 +32,13 @@ def main():
         action='store_true',
     )
 
+    parser.add_argument(
+        '--version',
+        action='version',
+        version=f'%(prog)s {get_version(BIN_DIR)}',
+        help='show the current version of the binaries',
+    )
+
     args = parser.parse_args()
 
     if args.init:
@@ -37,7 +46,11 @@ def main():
             print('please init from existing binaries first.')
             return
         else:
-            print(f"initing from verison {get_version(BIN_DIR)}")
+            print(f'initing from verison {get_version(BIN_DIR)}')
+            dest = Path.cwd() / 'BIN'
+            if dest.exists():
+                print(f'removing existing BIN directory at {dest}')
+                shutil.rmtree(dest)
             shutil.copytree(BIN_DIR, Path.cwd() / 'BIN')
             return
 
@@ -58,7 +71,7 @@ def main():
         return
     else:
         if BIN_DIR.exists():
-            print(f"removing existing version {get_version(BIN_DIR)}")
+            print(f'removing existing version {get_version(BIN_DIR)}')
             shutil.rmtree(BIN_DIR)
-        print(f"initing from verison {get_version(bindir)}")
+        print(f'initing from verison {get_version(bindir)}')
         shutil.copytree(bindir, BIN_DIR)
