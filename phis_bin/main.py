@@ -18,8 +18,6 @@ def get_version(bindir: Path) -> str:
 
 def main():
     BIN_DIR = CR / 'BIN'
-    if not BIN_DIR.exists():
-        BIN_DIR = Path(".")
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -34,12 +32,14 @@ def main():
         action='store_true',
     )
 
-    parser.add_argument(
-        '--version',
-        action='version',
-        version=f'%(prog)s {get_version(BIN_DIR)}',
-        help='show the current version of the binaries',
-    )
+
+    if BIN_DIR.exists():
+        parser.add_argument(
+            '--version',
+            action='version',
+            version=f'%(prog)s {get_version(BIN_DIR)}',
+            help='show the current version of the binaries',
+        )
 
     args = parser.parse_args()
 
