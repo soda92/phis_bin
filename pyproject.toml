@@ -1,6 +1,6 @@
 [project]
 name = "phis-bin"
-version = "2025.7.29.0"
+version = "2025.8.4.0"
 description = "browser binary files"
 readme = "README.md"
 requires-python = ">=3.10"
