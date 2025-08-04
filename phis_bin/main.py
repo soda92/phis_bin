@@ -18,6 +18,8 @@ def get_version(bindir: Path) -> str:
 
 def main():
     BIN_DIR = CR / 'BIN'
+    if not BIN_DIR.exists():
+        BIN_DIR = "."
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
